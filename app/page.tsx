@@ -1,65 +1,100 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
+import { Canvas } from "@react-three/fiber";
+import { Float, Sphere, MeshDistortMaterial } from "@react-three/drei";
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+
+export default function LandingPage() {
+  const router = useRouter();
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="relative min-h-screen bg-gradient-to-br from-[#0f172a] via-[#1e3a8a] to-[#4f46e5] text-white overflow-hidden">
+
+      {/* 3D Background */}
+      <div className="absolute inset-0 z-0">
+        <Canvas>
+          <ambientLight intensity={1} />
+          <directionalLight position={[2, 2, 2]} />
+
+          <Float speed={2} rotationIntensity={2} floatIntensity={3}>
+            <Sphere args={[1, 100, 200]} scale={2.5}>
+              <MeshDistortMaterial
+                color="#6366f1"
+                attach="material"
+                distort={0.4}
+                speed={2}
+                roughness={0}
+              />
+            </Sphere>
+          </Float>
+        </Canvas>
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6 text-center">
+
+        {/* Navbar */}
+        <div className="absolute top-0 w-full flex justify-between p-6">
+          <h1 className="text-xl font-bold">Amwin CRM</h1>
+
+          <div className="flex gap-4">
+            <button
+              onClick={() => router.push("/login")}
+              className="px-4 py-2 rounded-lg bg-white/10 backdrop-blur-md hover:bg-white/20"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              Login
+            </button>
+
+            <button
+              onClick={() => router.push("/signup")}
+              className="px-4 py-2 rounded-lg bg-indigo-500 hover:bg-indigo-600"
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+              Get Started
+            </button>
+          </div>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Hero Section */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          className="text-5xl md:text-6xl font-bold leading-tight"
+        >
+          Smart CRM for <br /> Modern Businesses
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2 }}
+          className="mt-6 text-lg text-gray-200 max-w-xl"
+        >
+          Manage sales, support, and operations seamlessly with Amwin Systems CRM.
+        </motion.p>
+
+        {/* CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="mt-8 flex gap-4"
+        >
+          <button
+            onClick={() => router.push("/signup")}
+            className="px-6 py-3 bg-indigo-500 rounded-xl text-lg hover:bg-indigo-600 transition"
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+            Get Started
+          </button>
+
+          <button
+            className="px-6 py-3 bg-white/10 backdrop-blur-md rounded-xl hover:bg-white/20"
           >
-            Documentation
-          </a>
-        </div>
-      </main>
+            Learn More
+          </button>
+        </motion.div>
+      </div>
     </div>
   );
 }
