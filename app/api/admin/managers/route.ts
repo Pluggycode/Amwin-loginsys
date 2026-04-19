@@ -2,24 +2,28 @@ import { prisma } from "../../../lib/prisma";
 
 export async function GET() {
   try {
-    const users = await prisma.user.findMany({
+    // ✅ Get all users with MANAGER role
+    const managers = await prisma.user.findMany({
       where: {
-        status: "PENDING", // 👈 only pending users for approval
+        status: "APPROVED",
+        role: {
+          name: "MANAGER",
+        },
       },
-      include: {
-        role: true,
-        department: true,
-        manager: true,
+      select: {
+        id: true,
+        name: true,
+        email: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
 
-    return Response.json(users);
+    return Response.json(managers);
 
   } catch (error: any) {
-    console.error("FETCH USERS ERROR:", error);
+    console.error("FETCH MANAGERS ERROR:", error);
 
     return Response.json(
       {

@@ -1,49 +1,71 @@
-// /app/api/auth/login/route.ts
-
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
 import { prisma } from "../../../lib/prisma";
-import { cookies } from "next/headers";
-
-const JWT_SECRET = process.env.JWT_SECRET!;
+import bcrypt from "bcryptjs";
 
 export async function POST(req: Request) {
-  const { email, password } = await req.json();
+  try {
+    const body = await req.json();
+    const { email, password } = body;
 
-  const user = await prisma.user.findUnique({
-    where: { email },
-    include: { role: true },
-  });
+    if (!email || !password) {
+      return Response.json(
+        { error: "Email and password required" },
+        { status: 400 }
+      );
+    }
 
-  if (!user) {
-    return Response.json({ error: "User not found" }, { status: 404 });
+    // 🔍 Find user with relations
+    const user = await prisma.user.findUnique({
+      where: { email },
+      include: {
+        role: true,
+        department: true,
+      },
+    });
+
+    if (!user) {
+      return Response.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // 🔴 Block unapproved users
+    if (user.status !== "APPROVED") {
+      return Response.json(
+        { error: "Waiting for admin approval" },
+        { status: 403 }
+      );
+    }
+
+    // 🔐 Check password
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      return Response.json(
+        { error: "Invalid credentials" },
+        { status: 401 }
+      );
+    }
+
+    // ✅ Return structured user
+   return Response.json({
+  success: true,
+  user: {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    role: user.role ? user.role.name : null,
+    department: user.department ? user.department.name : null,
+    managerId: user.managerId,
+  },
+});
+
+  } catch (error: any) {
+    console.error("LOGIN ERROR:", error);
+
+    return Response.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
   }
-
-  const valid = await bcrypt.compare(password, user.password);
-  if (!valid) {
-    return Response.json({ error: "Invalid password" }, { status: 401 });
-  }
-
-  if (user.status !== "APPROVED") {
-    return Response.json({ error: "Not approved yet" }, { status: 403 });
-  }
-
-  const token = jwt.sign(
-    {
-      userId: user.id,
-      role: user.role?.name,
-      status: user.status,
-    },
-    JWT_SECRET,
-    { expiresIn: "7d" }
-  );
-
-  const cookieStore = await cookies();
-  cookieStore.set("token", token, {
-    httpOnly: true,
-    secure: true,
-    path: "/",
-  });
-
-  return Response.json({ message: "Login successful" });
 }
