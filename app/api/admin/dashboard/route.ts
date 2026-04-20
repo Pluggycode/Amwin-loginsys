@@ -63,7 +63,7 @@ export async function GET() {
         totalManagers: managers.length,
       },
 
-      managers: managers.map((m) => ({
+      managers: managers.map((m: any) => ({
         id: m.id,
         name: m.name,
         email: m.email,
