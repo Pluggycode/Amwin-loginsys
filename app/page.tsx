@@ -12,14 +12,14 @@ import {
   PerspectiveCamera,
   MeshWobbleMaterial
 } from '@react-three/drei';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { 
-  ChevronRight, Cpu, Globe, Shield, Zap, 
-  Server, Command, LogIn, Rss, ArrowRight, ExternalLink
+  Cpu, Globe, Shield, Command, ArrowRight, ExternalLink, 
+  Users, BarChart3, Zap, Layers, Target, Terminal
 } from 'lucide-react';
 import * as THREE from 'three';
 
-// --- THE DATA PRISM MODEL (Optimized for Right Side) ---
+// --- THE DATA PRISM MODEL (Your Original 3D Asset) ---
 function DataPrism() {
   const meshRef = useRef<THREE.Mesh>(null);
   const shellRef = useRef<THREE.Mesh>(null);
@@ -34,7 +34,6 @@ function DataPrism() {
   return (
     <group scale={1.2}>
       <Float speed={2.5} rotationIntensity={0.4} floatIntensity={0.6}>
-        {/* Core Geometry */}
         <Octahedron ref={meshRef} args={[1, 0]}>
           <meshStandardMaterial 
             color="#0077FF" 
@@ -45,7 +44,6 @@ function DataPrism() {
           />
         </Octahedron>
         
-        {/* Glass Outer Shell */}
         <Octahedron ref={shellRef} args={[1.4, 0]}>
           <MeshWobbleMaterial 
             color="#00DDFF" 
@@ -56,7 +54,6 @@ function DataPrism() {
           />
         </Octahedron>
 
-        {/* Energy Ring */}
         <mesh rotation={[Math.PI / 3, 0, 0]}>
           <torusGeometry args={[2, 0.008, 16, 100]} />
           <meshStandardMaterial color="#00DDFF" emissive="#00DDFF" emissiveIntensity={4} />
@@ -66,14 +63,13 @@ function DataPrism() {
   );
 }
 
-// --- REUSABLE COMPONENTS ---
 const NavLink = ({ children, href }: { children: React.ReactNode, href: string }) => (
   <a href={href} className="text-[10px] font-bold tracking-[0.2em] text-gray-500 hover:text-[#00DDFF] transition-colors uppercase">
     {children}
   </a>
 );
 
-export default function AmwinPremiumPage() {
+export default function AmwinCRM() {
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -117,26 +113,22 @@ export default function AmwinPremiumPage() {
             <div className="p-2 bg-gradient-to-br from-[#0077FF] to-[#00DDFF] rounded-xl text-black shadow-lg shadow-[#0077FF]/20 group-hover:scale-110 transition-transform">
               <Command size={22} />
             </div>
-            <span className="font-black text-xl tracking-tighter italic">AMWIN SYSTEMS</span>
+            <span className="font-black text-xl tracking-tighter italic">AMWIN CRM</span>
           </div>
           
           <div className="hidden lg:flex items-center gap-10">
-            <NavLink href="#infra">Infrastructure</NavLink>
-            <NavLink href="#nodes">Nodes</NavLink>
-            <NavLink href="#security">Security</NavLink>
+            <NavLink href="#features">Platform</NavLink>
+            <NavLink href="#intelligence">Neural AI</NavLink>
+            <NavLink href="#enterprise">Enterprise</NavLink>
             <div className="h-4 w-[1px] bg-white/10 mx-2" />
-            <button onClick={() => router.push('/login')} className="text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white transition-colors">Login</button>
-            <button 
-              onClick={() => router.push('/signup')}
-              className="px-6 py-3 bg-gradient-to-r from-[#0077FF] to-[#00DDFF] text-black rounded-full font-black text-[10px] uppercase tracking-[0.15em] hover:brightness-110 transition-all shadow-xl shadow-[#0077FF]/20"
-            >
-              Get Started
+            <button className="px-6 py-3 bg-white/5 border border-white/10 text-white rounded-full font-black text-[10px] uppercase tracking-[0.15em] hover:bg-white/10 transition-all">
+              Request Demo
             </button>
           </div>
         </div>
       </nav>
 
-      {/* 3. HERO SECTION */}
+      {/* 3. HERO SECTION - CRM FOCUS */}
       <section className="relative min-h-screen flex items-center pt-20 px-10">
         <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div 
@@ -146,36 +138,32 @@ export default function AmwinPremiumPage() {
           >
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#0077FF]/5 border border-[#0077FF]/20 text-[#00DDFF] text-[10px] font-black tracking-[0.3em] mb-8 uppercase">
               <div className="w-2 h-2 bg-[#00DDFF] rounded-full animate-pulse" />
-              Computational Cluster V4.0
+              Intelligence Layer V4.0
             </div>
-            <h1 className="text-7xl md:text-[10rem] font-black tracking-tighter leading-[0.8] mb-10 text-white italic">
-              CORE <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">MATRIX.</span>
+            <h1 className="text-7xl md:text-[8rem] font-black tracking-tighter leading-[0.8] mb-10 text-white italic">
+              CLIENT <br /> <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">SYNAPSE.</span>
             </h1>
             <p className="text-gray-400 text-lg md:text-xl max-w-lg mb-12 leading-relaxed font-light">
-              Experience the power of distributed adaptation. Our matrix handles enterprise-scale neural systems with zero-latency synchronization.
+              The world's first CRM powered by distributed neural adaptation. Transform raw data into predictive relationship intelligence with zero latency.
             </p>
             <div className="flex flex-wrap gap-5">
-              <button 
-                onClick={() => router.push('/signup')}
-                className="group px-10 py-5 bg-gradient-to-r from-[#0077FF] to-[#00DDFF] text-black font-black rounded-2xl flex items-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-[#0077FF]/30"
-              >
-                DEPLOY NODES <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
+              <button className="group px-10 py-5 bg-gradient-to-r from-[#0077FF] to-[#00DDFF] text-black font-black rounded-2xl flex items-center gap-4 hover:scale-[1.02] active:scale-95 transition-all shadow-2xl shadow-[#0077FF]/30">
+                INITIATE SYNC <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </motion.div>
-          {/* Spacer for 3D model */}
           <div className="hidden lg:block h-[600px]" />
         </div>
       </section>
 
-      {/* 4. DATA STRIP (Social Proof / Stats) */}
-      <section className="py-10 border-y border-white/5 bg-black/40 backdrop-blur-sm">
+      {/* 4. CRM KPI STRIP */}
+      <section className="py-10 border-y border-white/5 bg-black/40 backdrop-blur-sm relative z-10">
         <div className="max-w-7xl mx-auto px-10 flex flex-wrap justify-between items-center gap-10">
           {[
-            { label: "Active Nodes", value: "14,200+" },
-            { label: "Throughput", value: "120 Tbps" },
-            { label: "Latency", value: "0.04ms" },
-            { label: "Security", value: "L-Grade" }
+            { label: "Sync Velocity", value: "0.04ms" },
+            { label: "Lead Scoring", value: "Neural-Grade" },
+            { label: "Active Pipelines", value: "850k+" },
+            { label: "Uptime", value: "99.999%" }
           ].map((stat, i) => (
             <div key={i} className="flex flex-col">
               <span className="text-[10px] font-black tracking-widest text-gray-600 uppercase mb-1">{stat.label}</span>
@@ -185,19 +173,19 @@ export default function AmwinPremiumPage() {
         </div>
       </section>
 
-      {/* 5. FEATURES GRID */}
-      <section id="infra" className="py-32 px-10 bg-black">
+      {/* 5. CRM FEATURES GRID */}
+      <section id="features" className="py-32 px-10 bg-black relative z-10">
         <div className="max-w-7xl mx-auto">
           <div className="max-w-2xl mb-24">
-            <h2 className="text-5xl font-black tracking-tighter italic mb-6">UNRIVALED INFRASTRUCTURE.</h2>
-            <p className="text-gray-500 leading-relaxed font-light italic">Every node is an adaptation of high-performance computing logic designed for absolute stability.</p>
+            <h2 className="text-5xl font-black tracking-tighter italic mb-6 uppercase">Predictive Intelligence.</h2>
+            <p className="text-gray-500 leading-relaxed font-light italic">AMWIN CRM doesn't just store data; it anticipates the needs of your next major acquisition.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
             {[
-              { icon: <Cpu />, title: "Neural Processing", desc: "Optimized for massive parallel computation workloads and AI training." },
-              { icon: <Globe />, title: "Mesh Fabric", desc: "Global state synchronization across every edge node in the matrix." },
-              { icon: <Shield />, title: "Fortified Kernel", desc: "Military-grade encryption integrated directly into the hardware layer." }
+              { icon: <Target />, title: "Neural Lead Scoring", desc: "AI-driven probability matrices that identify high-value targets before they even enter your funnel." },
+              { icon: <Layers />, title: "Unified Data Mesh", desc: "Merge siloed data from every touchpoint into a single, real-time client profile." },
+              { icon: <BarChart3 />, title: "Autonomous Analytics", desc: "Automated forecasting models that adapt to global market fluctuations in milliseconds." }
             ].map((feature, i) => (
               <motion.div 
                 key={i}
@@ -215,40 +203,26 @@ export default function AmwinPremiumPage() {
         </div>
       </section>
 
-      {/* 6. CALL TO ACTION FOOTER */}
-      <footer className="py-32 px-10 border-t border-white/5 relative overflow-hidden">
-        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#0077FF] to-transparent opacity-50" />
+      {/* 6. INTEGRATION / FOOTER */}
+      <footer className="py-32 px-10 border-t border-white/5 relative overflow-hidden bg-[#020617]">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-20">
           <div className="max-w-md">
             <div className="flex items-center gap-3 mb-8">
-              <div className="p-2 bg-white/5 rounded-lg text-white">
-                <Command size={20} />
-              </div>
+              <div className="p-2 bg-white/5 rounded-lg text-white"><Command size={20} /></div>
               <span className="font-black text-xl tracking-tighter italic uppercase">Amwin Systems</span>
             </div>
             <p className="text-gray-500 text-xs tracking-widest leading-loose uppercase mb-10">
-              Building the future of distributed adaptation. Scalable, secure, and ultra-realistic systems for the 2026 digital landscape.
+              The infrastructure for 2026's elite sales teams. Global synchronization for a decentralized world.
             </p>
-            <div className="flex gap-6">
-              <ExternalLink size={18} className="text-gray-700 hover:text-white cursor-pointer transition-colors" />
-              <Rss size={18} className="text-gray-700 hover:text-white cursor-pointer transition-colors" />
-            </div>
           </div>
 
           <div className="text-right">
-             <h4 className="text-[10px] font-black tracking-[0.4em] text-gray-700 uppercase mb-8">Integrations</h4>
+             <h4 className="text-[10px] font-black tracking-[0.4em] text-gray-700 uppercase mb-8">Ecosystem</h4>
              <div className="flex flex-col gap-4 text-xs font-bold text-gray-500 italic">
-               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors">Python SDK V4</span>
-               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors">Prisma Neural Client</span>
-               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors">Next.js Edge Runtime</span>
+               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors flex items-center justify-end gap-2">Salesforce Bridge <ExternalLink size={12}/></span>
+               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors flex items-center justify-end gap-2">Neural API <Terminal size={12}/></span>
+               <span className="hover:text-[#00DDFF] cursor-pointer transition-colors flex items-center justify-end gap-2">Edge CRM Runtime <Zap size={12}/></span>
              </div>
-          </div>
-        </div>
-        <div className="max-w-7xl mx-auto mt-32 flex justify-between items-center text-[10px] font-black tracking-widest text-gray-800 uppercase">
-          <span>© 2026 AMWIN // ALL RIGHTS RESERVED</span>
-          <div className="flex gap-10">
-            <span>Privacy</span>
-            <span>Terms</span>
           </div>
         </div>
       </footer>
